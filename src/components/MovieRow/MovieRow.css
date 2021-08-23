@@ -8,10 +8,12 @@
   overflow-y: hidden;
   overflow-x: scroll;
   padding: 20px;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
 }
 
 .movieRow_posters::-webkit-scrollbar {
-  display: none;
+  display: none; /* Safari and Chrome */
 }
 
 .movieRow_poster {
