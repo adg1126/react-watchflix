@@ -29,6 +29,7 @@ export default function MovieRow({
                   }`}
                   alt={m.name}
                 />
+                <div className='movieRow_poster_title'>{m.name || m.title}</div>
               </a>
             ))
           : null}

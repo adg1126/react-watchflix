@@ -18,19 +18,26 @@
 
 .movieRow_poster {
   object-fit: contain;
-  max-height: 100px;
-  margin-right: 10px;
+  max-height: 130px;
   transition: transform 450ms;
+  margin: 0.6rem;
 }
 
 .movieRow_poster:hover {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 .movieRow_posterLarge {
-  max-height: 250px;
+  max-height: 300px;
+  margin: 0.5rem;
 }
 
 .movieRow_posterLarge:hover {
-  transform: scale(1.09);
+  transform: scale(1.1);
+}
+
+.movieRow_poster_title {
+  margin: 0 auto;
+  text-align: center;
+  color: #ffff;
 }
