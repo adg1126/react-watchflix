@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import './Movies.css';
 import history from '../../history';
@@ -6,7 +6,26 @@ import { imgBaseUrl } from '../../utils/baseurls';
 import { secondsToTime } from '../../utils/funcitions';
 import YouTube from 'react-youtube';
 
-export default function Movie({ movie, recommendedMovies, trailerUrl }) {
+export default function Movie({
+  movieId,
+  movie,
+  recommendedMovies,
+  trailerUrl,
+  fetchMovieStart,
+  fetchTrailerUrlStart,
+  fetchRecommendedMoviesStart
+}) {
+  useEffect(() => {
+    fetchMovieStart(movieId);
+    fetchTrailerUrlStart(movieId);
+    fetchRecommendedMoviesStart(movieId);
+  }, [
+    movieId,
+    fetchMovieStart,
+    fetchTrailerUrlStart,
+    fetchRecommendedMoviesStart
+  ]);
+
   const [player, setPlayer] = useState(null);
 
   const { h, m } = secondsToTime(movie?.runtime * 60);

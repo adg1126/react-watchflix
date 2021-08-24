@@ -16,13 +16,6 @@ export default function CustomSwitch({ children }) {
     setProgress(false);
   }, [prevLoc]);
 
-  TopBarProgress.config({
-    barColors: {
-      0: '#F40612',
-      1: '#F40612'
-    }
-  });
-
   return (
     <>
       {progress && <TopBarProgress />}

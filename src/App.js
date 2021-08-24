@@ -1,12 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Router, Route } from 'react-router-dom';
 import './App.css';
 import history from './history';
 
-import CustomSwitch from './components/CustomSwitch';
 import Nav from './components/Nav/Nav';
 import HomeContainer from './containers/HomeContainer';
-import MovieContainer from './containers/MovieContainer';
+import ErrorBoundary from './components/ErrorBoundary/Errorboundary';
+import Spinner from './components/Spinner/Spinner';
+import TopBarProgress from 'react-topbar-progress-indicator';
+import CustomSwitch from './components/CustomSwitch';
+const MovieContainer = lazy(() => import('./containers/MovieContainer'));
 
 export const movieCategories = [
   { title: 'Trending Now', movieType: 'trending', isLargeRow: true },
@@ -19,34 +22,17 @@ export const movieCategories = [
   { title: 'Documentaries', movieType: 'documentaries' }
 ];
 
-function App({
-  fetchMoviesStart,
-  fetchTrailerUrlStart,
-  fetchMovieStart,
-  fetchRecommendedMoviesStart
-}) {
-  const { pathname } = history.location;
-  const movieId = pathname.slice(pathname.lastIndexOf('/') + 1);
-
+function App({ fetchMoviesStart }) {
   useEffect(() => {
     fetchMoviesStart();
+  }, [fetchMoviesStart]);
 
-    if (movieId.length) {
-      fetchTrailerUrlStart(movieId);
-      fetchMovieStart(movieId);
-      fetchRecommendedMoviesStart(movieId);
+  TopBarProgress.config({
+    barColors: {
+      0: '#e50914',
+      1: '#e50914'
     }
-
-    history.listen((location, action) => {
-      console.log('on route change');
-    });
-  }, [
-    fetchMoviesStart,
-    movieId,
-    fetchTrailerUrlStart,
-    fetchMovieStart,
-    fetchRecommendedMoviesStart
-  ]);
+  });
 
   return (
     <div className='app'>
@@ -54,7 +40,11 @@ function App({
         <Nav />
         <CustomSwitch>
           <Route exact path='/' component={HomeContainer} />
-          <Route exact path='/title/:id' component={MovieContainer} />
+          <ErrorBoundary>
+            <Suspense fallback={<Spinner />}>
+              <Route exact path='/title/:id' component={MovieContainer} />
+            </Suspense>
+          </ErrorBoundary>
         </CustomSwitch>
       </Router>
     </div>
