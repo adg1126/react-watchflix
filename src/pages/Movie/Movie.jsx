@@ -46,15 +46,6 @@ export default function Movie({ movie, recommendedMovies, trailerUrl }) {
             </a>
           </div>
         </div>
-
-        <div className='movie-info'>
-          <h2 className='movie-title'>{movie.title || movie.name}</h2>
-          <p className='movie-details'>{`${movie.release_date} | ${h}h ${m}m`}</p>
-          <p className='movie-description'>{movie.overview}</p>
-          <a className='play_button' href='#trailer' onClick={handleClickPlay}>
-            Play
-          </a>
-        </div>
       </section>
       <section>
         <div id='trailer'>

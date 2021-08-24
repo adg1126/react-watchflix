@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import './App.css';
 import history from './history';
 
+import CustomSwitch from './components/CustomSwitch';
 import Nav from './components/Nav/Nav';
 import HomeContainer from './containers/HomeContainer';
 import MovieContainer from './containers/MovieContainer';
@@ -35,6 +36,10 @@ function App({
       fetchMovieStart(movieId);
       fetchRecommendedMoviesStart(movieId);
     }
+
+    history.listen((location, action) => {
+      console.log('on route change');
+    });
   }, [
     fetchMoviesStart,
     movieId,
@@ -47,10 +52,10 @@ function App({
     <div className='app'>
       <Router history={history}>
         <Nav />
-        <Switch>
+        <CustomSwitch>
           <Route exact path='/' component={HomeContainer} />
           <Route exact path='/title/:id' component={MovieContainer} />
-        </Switch>
+        </CustomSwitch>
       </Router>
     </div>
   );
