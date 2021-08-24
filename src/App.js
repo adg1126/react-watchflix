@@ -1,6 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { Router, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Home from './pages/Home/Home';
+import history from './history';
+
+import Nav from './components/Nav/Nav';
+import HomeContainer from './containers/HomeContainer';
+import MovieContainer from './containers/MovieContainer';
 
 export const movieCategories = [
   { title: 'Trending Now', movieType: 'trending', isLargeRow: true },
@@ -15,12 +20,18 @@ export const movieCategories = [
 
 function App({ fetchMoviesStart }) {
   useEffect(() => {
-    movieCategories.forEach(({ movieType }) => fetchMoviesStart(movieType));
+    fetchMoviesStart();
   }, [fetchMoviesStart]);
 
   return (
     <div className='app'>
-      <Home />
+      <Router history={history}>
+        <Nav />
+        <Switch>
+          <Route exact path='/' component={HomeContainer} />
+          <Route exact path='/title/:id' component={MovieContainer} />
+        </Switch>
+      </Router>
     </div>
   );
 }

@@ -1,15 +1,11 @@
 import React from 'react';
 import './MovieRow.css';
 import { imgBaseUrl } from '../../utils/baseurls';
+import history from '../../history';
 
-export default function MovieRow({
-  fetchTrailerUrlStart,
-  title,
-  isLargeRow,
-  movies
-}) {
+export default function MovieRow({ title, isLargeRow, movies }) {
   const handleClick = movie => {
-    fetchTrailerUrlStart(movie.title);
+    history.push(`/title/${movie.id}`);
   };
 
   return (
@@ -18,7 +14,7 @@ export default function MovieRow({
       <div className='movieRow_posters'>
         {movies && movies.length
           ? movies.map(m => (
-              <a href='#trailer' key={m.id}>
+              <div key={m.id}>
                 <img
                   className={`movieRow_poster ${
                     isLargeRow && 'movieRow_posterLarge'
@@ -30,7 +26,7 @@ export default function MovieRow({
                   alt={m.name}
                 />
                 <div className='movieRow_poster_title'>{m.name || m.title}</div>
-              </a>
+              </div>
             ))
           : null}
       </div>

@@ -1,8 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  fetchMoviesStart,
-  fetchTrailerUrlStart
-} from '../redux/movies/moviesActions';
+import { fetchMoviesStart } from '../redux/movies/moviesActions';
 import {
   selectMovieType,
   selectTrailerUrl
@@ -15,6 +12,5 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default connect(mapStateToProps, {
-  fetchMoviesStart,
-  fetchTrailerUrlStart
+  fetchMoviesStart
 })(MovieRow);

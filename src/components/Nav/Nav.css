@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   display: flex;
-  padding: 20px;
+  padding: 8px;
   z-index: 1;
   transition-timing-function: ease-in;
   transition: all 0.5s;
@@ -17,4 +17,11 @@
   width: 120px;
   object-fit: contain;
   cursor: pointer;
+  margin-left: 2em;
+}
+
+@media screen and (max-width: 960px) {
+  .nav_logo {
+    margin-left: 0.5em;
+  }
 }

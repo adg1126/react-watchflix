@@ -2,8 +2,18 @@ import { createSelector } from 'reselect';
 
 const selectMovies = state => state.movies;
 
+export const selectMovieList = createSelector(
+  [selectMovies],
+  movies => movies?.movieList
+);
+
 export const selectMovieType = movieType =>
-  createSelector([selectMovies], movies => movies[movieType]);
+  createSelector([selectMovieList], movieList => movieList[movieType]);
+
+export const selectMovie = createSelector(
+  [selectMovies],
+  movies => movies?.movie
+);
 
 export const selectBannerMovie = createSelector(
   [selectMovies],
@@ -18,4 +28,9 @@ export const selectTrailerUrl = createSelector(
 export const selecIsFetched = createSelector(
   [selectMovies],
   movies => movies.isFetched
+);
+
+export const selectRecommendedMovies = createSelector(
+  [selectMovies],
+  movies => movies.recommendedMovies
 );

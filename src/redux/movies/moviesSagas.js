@@ -14,17 +14,22 @@ import {
   fetchMoviesFailure,
   fetchBannerMovieSuccess,
   fetchBannerMovieFailure,
-  fetchUrlTrailerSuccess
+  fetchUrlTrailerSuccess,
+  fetchMovieSuccess,
+  fetchRecommendedMoviesSuccess,
+  fetchRecommendedMoviesFailure
 } from './moviesActions';
 import {
   FETCH_MOVIES_START,
   FETCH_BANNER_MOVIE_START,
   FETCH_MOVIES_SUCCESS,
-  FETCH_TRAILER_URL_START
+  FETCH_TRAILER_URL_START,
+  FETCH_MOVIE_START,
+  FETCH_RECOMMENDED_MOVIES_START
 } from './moviesActionTypes';
 import { selectMovieType } from './moviesSelectors';
 
-const request = {
+const urls = {
   trending: `/trending/all/week?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`,
   netflixOriginals: `/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&with_networks=213`,
   topRated: `/movie/top_rated?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`,
@@ -35,11 +40,18 @@ const request = {
   documentaries: `/discover/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&with_genres=99`
 };
 
-function* fetchMoviesAsync({ payload: movieType }) {
+function* fetchMoviesAsync() {
   try {
-    const res = yield fetch(`${baseUrl}${request[movieType]}`);
-    const { results } = yield res.json();
-    yield put(fetchMoviesSuccess(movieType, results));
+    const moviesArr = yield Promise.all(
+      Object.entries(urls).map(async ([k, v]) => {
+        const res = await fetch(`${baseUrl}${v}`);
+        const { results } = await res.json();
+
+        return { [k]: results };
+      })
+    );
+
+    yield put(fetchMoviesSuccess(Object.assign(...moviesArr)));
   } catch (err) {
     yield put(fetchMoviesFailure(err.message));
   }
@@ -66,9 +78,9 @@ function* fetchBannerMovieStart() {
   );
 }
 
-function* fetchTrailerUrlAsync({ payload: movieTitle }) {
+function* fetchTrailerUrlAsync({ payload }) {
   try {
-    const url = yield movieTrailer(movieTitle);
+    const url = yield movieTrailer(null, { tmdbId: payload });
     yield put(fetchUrlTrailerSuccess(url.slice(url.lastIndexOf('=') + 1)));
   } catch (err) {
     console.log(err.message);
@@ -76,13 +88,43 @@ function* fetchTrailerUrlAsync({ payload: movieTitle }) {
 }
 
 function* fetchTrailerUrlStart() {
-  yield takeEvery([FETCH_TRAILER_URL_START], fetchTrailerUrlAsync);
+  yield takeEvery(FETCH_TRAILER_URL_START, fetchTrailerUrlAsync);
+}
+function* fetchMovieAsync({ payload }) {
+  const res = yield fetch(
+    `${baseUrl}/movie/${payload}?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+  );
+  const movie = yield res.json();
+  yield put(fetchMovieSuccess(movie));
+}
+
+function* fetchMovieStart() {
+  yield takeEvery(FETCH_MOVIE_START, fetchMovieAsync);
+}
+
+function* fetchRecommendedMoviesAsync({ payload }) {
+  try {
+    const res = yield fetch(
+      `${baseUrl}/movie/${payload}/recommendations?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+    );
+    const { results } = yield res.json();
+
+    yield put(fetchRecommendedMoviesSuccess(results));
+  } catch (err) {
+    yield put(fetchRecommendedMoviesFailure(err.message));
+  }
+}
+
+function* fetchRecommendedMoviesStart() {
+  yield takeEvery(FETCH_RECOMMENDED_MOVIES_START, fetchRecommendedMoviesAsync);
 }
 
 export function* moviesSagas() {
   yield all([
     call(fetchMoviesStart),
     call(fetchBannerMovieStart),
-    call(fetchTrailerUrlStart)
+    call(fetchTrailerUrlStart),
+    call(fetchMovieStart),
+    call(fetchRecommendedMoviesStart)
   ]);
 }
