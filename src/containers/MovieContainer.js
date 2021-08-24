@@ -1,27 +1,20 @@
+import { compose } from 'redux';
 import { connect } from 'react-redux';
-import {
-  fetchMovieStart,
-  fetchTrailerUrlStart,
-  fetchRecommendedMoviesStart
-} from '../redux/movies/moviesActions';
+import { createStructuredSelector } from 'reselect';
 import {
   selectMovie,
-  selectRecommendedMovies
+  selectRecommendedMovies,
+  selectTrailerUrl,
+  selecIsFetched
 } from '../redux/movies/moviesSelectors';
+import WithSpinner from './WithSpinner';
 import Movie from '../pages/Movie/Movie';
 
-const mapStateToProps = (state, ownProps) => {
-  const movieId = ownProps.match.params.id;
+const mapStateToProps = createStructuredSelector({
+  movie: selectMovie,
+  recommendedMovies: selectRecommendedMovies,
+  trailerUrl: selectTrailerUrl,
+  isFetched: selecIsFetched
+});
 
-  return {
-    movieId,
-    movie: selectMovie(state),
-    recommendedMovies: selectRecommendedMovies(state)
-  };
-};
-
-export default connect(mapStateToProps, {
-  fetchMovieStart,
-  fetchTrailerUrlStart,
-  fetchRecommendedMoviesStart
-})(Movie);
+export default compose(connect(mapStateToProps), WithSpinner)(Movie);

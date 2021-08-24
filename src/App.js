@@ -18,10 +18,30 @@ export const movieCategories = [
   { title: 'Documentaries', movieType: 'documentaries' }
 ];
 
-function App({ fetchMoviesStart }) {
+function App({
+  fetchMoviesStart,
+  fetchTrailerUrlStart,
+  fetchMovieStart,
+  fetchRecommendedMoviesStart
+}) {
+  const { pathname } = history.location;
+  const movieId = pathname.slice(pathname.lastIndexOf('/') + 1);
+
   useEffect(() => {
     fetchMoviesStart();
-  }, [fetchMoviesStart]);
+
+    if (movieId.length) {
+      fetchTrailerUrlStart(movieId);
+      fetchMovieStart(movieId);
+      fetchRecommendedMoviesStart(movieId);
+    }
+  }, [
+    fetchMoviesStart,
+    movieId,
+    fetchTrailerUrlStart,
+    fetchMovieStart,
+    fetchRecommendedMoviesStart
+  ]);
 
   return (
     <div className='app'>
