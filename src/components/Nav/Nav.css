@@ -20,7 +20,22 @@
   margin-left: 2em;
 }
 
+.play_button {
+  cursor: pointer;
+  color: #ffff;
+  outline: none;
+  border: none;
+  font-weight: 700;
+  border-radius: 0.2vw;
+  background-color: rgba(51, 51, 51, 0.5);
+  padding: 0.5rem 2rem;
+}
+
 @media screen and (max-width: 960px) {
+  .nav {
+    background-color: #111;
+  }
+
   .nav_logo {
     margin-left: 0.5em;
   }
