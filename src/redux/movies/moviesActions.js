@@ -7,8 +7,10 @@ import {
   FETCH_BANNER_MOVIE_FAILURE,
   FETCH_TRAILER_URL_START,
   FETCH_TRAILER_URL_SUCCESS,
+  FETCH_TRAILER_URL_FAILURE,
   FETCH_MOVIE_START,
   FETCH_MOVIE_SUCCESS,
+  FETCH_MOVIE_FAILURE,
   FETCH_RECOMMENDED_MOVIES_START,
   FETCH_RECOMMENDED_MOVIES_SUCCESS,
   FETCH_RECOMMENDED_MOVIES_FAILURE
@@ -42,14 +44,19 @@ export const fetchBannerMovieFailure = errMsg => ({
   payload: errMsg
 });
 
-export const fetchTrailerUrlStart = movieTitle => ({
+export const fetchTrailerUrlStart = movieId => ({
   type: FETCH_TRAILER_URL_START,
-  payload: movieTitle
+  payload: movieId
 });
 
 export const fetchUrlTrailerSuccess = url => ({
   type: FETCH_TRAILER_URL_SUCCESS,
   payload: url
+});
+
+export const fetchTrailerUrlFailure = errMsg => ({
+  type: FETCH_TRAILER_URL_FAILURE,
+  payload: errMsg
 });
 
 export const fetchMovieStart = movieId => ({
@@ -60,6 +67,11 @@ export const fetchMovieStart = movieId => ({
 export const fetchMovieSuccess = movieObj => ({
   type: FETCH_MOVIE_SUCCESS,
   payload: movieObj
+});
+
+export const fetchMovieFailure = errMsg => ({
+  type: FETCH_MOVIE_FAILURE,
+  payload: errMsg
 });
 
 export const fetchRecommendedMoviesStart = movieId => ({

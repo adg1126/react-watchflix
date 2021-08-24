@@ -15,7 +15,9 @@ import {
   fetchBannerMovieSuccess,
   fetchBannerMovieFailure,
   fetchUrlTrailerSuccess,
+  fetchTrailerUrlFailure,
   fetchMovieSuccess,
+  fetchMovieFailure,
   fetchRecommendedMoviesSuccess,
   fetchRecommendedMoviesFailure
 } from './moviesActions';
@@ -83,7 +85,7 @@ function* fetchTrailerUrlAsync({ payload }) {
     const url = yield movieTrailer(null, { tmdbId: payload });
     yield put(fetchUrlTrailerSuccess(url.slice(url.lastIndexOf('=') + 1)));
   } catch (err) {
-    console.log(err.message);
+    yield put(fetchTrailerUrlFailure(err.message));
   }
 }
 
@@ -91,11 +93,15 @@ function* fetchTrailerUrlStart() {
   yield takeEvery(FETCH_TRAILER_URL_START, fetchTrailerUrlAsync);
 }
 function* fetchMovieAsync({ payload }) {
-  const res = yield fetch(
-    `${baseUrl}/movie/${payload}?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
-  );
-  const movie = yield res.json();
-  yield put(fetchMovieSuccess(movie));
+  try {
+    const res = yield fetch(
+      `${baseUrl}/movie/${payload}?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+    );
+    const movie = yield res.json();
+    yield put(fetchMovieSuccess(movie));
+  } catch (err) {
+    yield put(fetchMovieFailure(err.message));
+  }
 }
 
 function* fetchMovieStart() {
