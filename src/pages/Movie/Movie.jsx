@@ -1,51 +1,74 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import './Movies.css';
 import history from '../../history';
 import { imgBaseUrl } from '../../utils/baseurls';
 import { secondsToTime } from '../../utils/funcitions';
+import YouTube from 'react-youtube';
 
-export default function Movie({
-  movieId,
-  movie,
-  recommendedMovies,
-  fetchTrailerUrlStart,
-  fetchMovieStart,
-  fetchRecommendedMoviesStart
-}) {
-  useEffect(() => {
-    fetchTrailerUrlStart(movieId);
-    fetchMovieStart(movieId);
-    fetchRecommendedMoviesStart(movieId);
-  }, [
-    movieId,
-    fetchTrailerUrlStart,
-    fetchMovieStart,
-    fetchRecommendedMoviesStart
-  ]);
+export default function Movie({ movie, recommendedMovies, trailerUrl }) {
+  const [player, setPlayer] = useState(null);
 
   const { h, m } = secondsToTime(movie?.runtime * 60);
 
-  const handleClick = movie => {
+  const handleClickRedirect = movie => {
     history.push(`/title/${movie.id}`);
+  };
+
+  const handleClickPlay = () => {
+    player.playVideo();
+  };
+
+  const onPlayerReady = e => {
+    setPlayer(e.target);
   };
 
   return !_.isEmpty(movie) ? (
     <div className='movie-container'>
       <section className='movie-banner-section'>
         <div
-          className='image-overlay'
+          className='image'
           style={{
             backgroundImage: `url(${imgBaseUrl}/${movie.backdrop_path})`
           }}
-        >
-          <div className='gray-overlay'>
-            <div className='movie-info'>
-              <h2 className='movie-title'>{movie.title || movie.name}</h2>
-              <p className='movie-details'>{`${movie.release_date} | ${h}h ${m}m`}</p>
-              <p className='movie-description'>{movie.overview}</p>
-            </div>
+        />
+        <div className='gray-overlay'>
+          <div className='movie-info'>
+            <h2 className='movie-title'>{movie.title || movie.name}</h2>
+            <p className='movie-details'>{`${movie.release_date} | ${h}h ${m}m`}</p>
+            <p className='movie-description'>{movie.overview}</p>
+            <a
+              className='play_button'
+              href='#trailer'
+              onClick={handleClickPlay}
+            >
+              Play
+            </a>
           </div>
+        </div>
+
+        <div className='movie-info'>
+          <h2 className='movie-title'>{movie.title || movie.name}</h2>
+          <p className='movie-details'>{`${movie.release_date} | ${h}h ${m}m`}</p>
+          <p className='movie-description'>{movie.overview}</p>
+          <a className='play_button' href='#trailer' onClick={handleClickPlay}>
+            Play
+          </a>
+        </div>
+      </section>
+      <section>
+        <div id='trailer'>
+          <YouTube
+            videoId={trailerUrl}
+            onReady={onPlayerReady}
+            opts={{
+              height: '400',
+              width: '100%',
+              playerVars: {
+                autoplay: 0
+              }
+            }}
+          />
         </div>
       </section>
       <section className='more-details-section'>
@@ -80,7 +103,7 @@ export default function Movie({
             <div key={m.id}>
               <img
                 className={`movieRow_poster`}
-                onClick={() => handleClick(m)}
+                onClick={() => handleClickRedirect(m)}
                 src={`${imgBaseUrl}${m.backdrop_path}`}
                 alt={m.name}
               />
