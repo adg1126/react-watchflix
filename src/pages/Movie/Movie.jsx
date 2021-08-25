@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import './Movies.css';
-import history from '../../history';
 import { imgBaseUrl } from '../../utils/baseurls';
 import { secondsToTime } from '../../utils/funcitions';
 import YouTube from 'react-youtube';
+import MovieRow from '../../components/MovieRow';
 
 export default function Movie({
   movieId,
@@ -29,10 +29,6 @@ export default function Movie({
   const [player, setPlayer] = useState(null);
 
   const { h, m } = secondsToTime(movie?.runtime * 60);
-
-  const handleClickRedirect = movie => {
-    history.push(`/title/${movie.id}`);
-  };
 
   const handleClickPlay = () => {
     player.playVideo();
@@ -108,19 +104,7 @@ export default function Movie({
       </section>
       <section className='more-details-section'>
         <h1 className='header'>More Like This</h1>
-        <div className='movieRow_posters'>
-          {recommendedMovies?.map(m => (
-            <div key={m.id}>
-              <img
-                className={`movieRow_poster`}
-                onClick={() => handleClickRedirect(m)}
-                src={`${imgBaseUrl}${m.backdrop_path}`}
-                alt={m.name}
-              />
-              <div className='movieRow_poster_title'>{m.name || m.title}</div>
-            </div>
-          ))}
-        </div>
+        <MovieRow movies={recommendedMovies} />
       </section>
     </div>
   ) : null;

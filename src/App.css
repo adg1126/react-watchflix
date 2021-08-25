@@ -1,8 +1,15 @@
 * {
   margin: 0;
   scroll-behavior: smooth;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 .app {
   background-color: #111;
+  overflow-x: hidden;
 }

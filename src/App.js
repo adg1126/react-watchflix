@@ -1,15 +1,18 @@
 import { useEffect, lazy, Suspense } from 'react';
 import { Router, Route } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from './ui/Theme';
 import './App.css';
 import history from './history';
 
-import Nav from './components/Nav/Nav';
+import Appbar from './components/Appbar';
 import HomeContainer from './containers/HomeContainer';
 import ErrorBoundary from './components/ErrorBoundary/Errorboundary';
-import Spinner from './components/Spinner/Spinner';
+import Spinner from './components/Spinner';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import CustomSwitch from './components/CustomSwitch';
 const MovieContainer = lazy(() => import('./containers/MovieContainer'));
+const LoginContainer = lazy(() => import('./containers/LoginContainer'));
 
 export const movieCategories = [
   { title: 'Trending Now', movieType: 'trending', isLargeRow: true },
@@ -36,17 +39,20 @@ function App({ fetchMoviesStart }) {
 
   return (
     <div className='app'>
-      <Router history={history}>
-        <Nav />
-        <CustomSwitch>
-          <Route exact path='/' component={HomeContainer} />
-          <ErrorBoundary>
-            <Suspense fallback={<Spinner />}>
-              <Route exact path='/title/:id' component={MovieContainer} />
-            </Suspense>
-          </ErrorBoundary>
-        </CustomSwitch>
-      </Router>
+      <ThemeProvider theme={theme}>
+        <Router history={history}>
+          <Appbar />
+          <CustomSwitch>
+            <Route exact path='/' component={HomeContainer} />
+            <ErrorBoundary>
+              <Suspense fallback={<Spinner />}>
+                <Route exact path='/login' component={LoginContainer} />
+                <Route exact path='/title/:id' component={MovieContainer} />
+              </Suspense>
+            </ErrorBoundary>
+          </CustomSwitch>
+        </Router>
+      </ThemeProvider>
     </div>
   );
 }

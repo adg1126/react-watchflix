@@ -1,7 +1,7 @@
 import React from 'react';
 import './Home.css';
 import BannerContainer from '../../containers/BannerContainer';
-import MovieRowContainer from '../../containers/MovieRowContainer';
+import MovieSectionContainer from '../../containers/MovieSectionContainer';
 import { movieCategories } from '../../App';
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
       <BannerContainer />
       <div id='movies_container'>
         {movieCategories.map((m, i) => (
-          <MovieRowContainer key={i} {...m} />
+          <MovieSectionContainer key={i} {...m} />
         ))}
       </div>
     </div>

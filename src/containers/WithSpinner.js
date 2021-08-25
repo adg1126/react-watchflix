@@ -1,4 +1,4 @@
-import Spinner from '../components/Spinner/Spinner';
+import Spinner from '../components/Spinner';
 
 const WithSpinner =
   WrappedComponent =>

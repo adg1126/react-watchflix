@@ -4,7 +4,7 @@ import {
   selectMovieType,
   selectTrailerUrl
 } from '../redux/movies/moviesSelectors';
-import MovieRow from '../components/MovieRow/MovieRow';
+import MovieSection from '../components/MovieSection';
 
 const mapStateToProps = (state, ownProps) => ({
   movies: selectMovieType(ownProps.movieType)(state),
@@ -13,4 +13,4 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps, {
   fetchMoviesStart
-})(MovieRow);
+})(MovieSection);
