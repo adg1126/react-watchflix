@@ -12,11 +12,9 @@ import Spinner from './components/Spinner';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import CustomSwitch from './components/CustomSwitch';
 const MovieContainer = lazy(() => import('./containers/MovieContainer'));
-const LoginContainer = lazy(() => import('./containers/LoginContainer'));
 
 export const movieCategories = [
   { title: 'Trending Now', movieType: 'trending', isLargeRow: true },
-  { title: 'NETFLIX ORIGINALS', movieType: 'netflixOriginals' },
   { title: 'Top Rated', movieType: 'topRated' },
   { title: 'Action Movies', movieType: 'actionMovies' },
   { title: 'Funny Movies', movieType: 'comedyMovies' },
@@ -25,10 +23,11 @@ export const movieCategories = [
   { title: 'Documentaries', movieType: 'documentaries' }
 ];
 
-function App({ fetchMoviesStart }) {
+function App({ fetchMoviesStart, fetchBannerMovieStart }) {
   useEffect(() => {
     fetchMoviesStart();
-  }, [fetchMoviesStart]);
+    fetchBannerMovieStart();
+  }, [fetchMoviesStart, fetchBannerMovieStart]);
 
   TopBarProgress.config({
     barColors: {
@@ -46,7 +45,6 @@ function App({ fetchMoviesStart }) {
             <Route exact path='/' component={HomeContainer} />
             <ErrorBoundary>
               <Suspense fallback={<Spinner />}>
-                <Route exact path='/login' component={LoginContainer} />
                 <Route exact path='/title/:id' component={MovieContainer} />
               </Suspense>
             </ErrorBoundary>

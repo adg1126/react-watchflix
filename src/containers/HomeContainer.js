@@ -3,14 +3,20 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
   selecIsFetched,
+  selectBannerMovie,
   selectTrailerUrl
 } from '../redux/movies/moviesSelectors';
+import { fetchTrailerUrlStart } from '../redux/movies/moviesActions';
 import WithSpinner from './WithSpinner';
-import Home from '../pages/Home/Home';
+import Home from '../pages/Home';
 
 const mapStateToProps = createStructuredSelector({
   isFetched: selecIsFetched,
-  trailerUrl: selectTrailerUrl
+  trailerUrl: selectTrailerUrl,
+  bannerMovie: selectBannerMovie
 });
 
-export default compose(connect(mapStateToProps), WithSpinner)(Home);
+export default compose(
+  connect(mapStateToProps, { fetchTrailerUrlStart }),
+  WithSpinner
+)(Home);

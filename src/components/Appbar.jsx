@@ -31,7 +31,9 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: '#111'
     }
   },
-  appBarDark: { backgroundColor: '#111' },
+  appBarDark: {
+    backgroundColor: '#111'
+  },
   toolbar: { width: '100vw' },
   logo: {
     width: '120px',

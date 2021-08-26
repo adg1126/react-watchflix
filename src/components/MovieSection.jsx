@@ -8,7 +8,10 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'none',
     [theme.breakpoints.down('sm')]: { margin: '1em' }
   },
-  fontWhite: { color: '#ffff' }
+  fontWhite: { color: '#ffff' },
+  title: {
+    fontWeight: 'bold'
+  }
 }));
 
 export default function MovieSection({ title, isLargeRow, movies }) {
@@ -17,7 +20,10 @@ export default function MovieSection({ title, isLargeRow, movies }) {
   return (
     <Grid container direaction='column' className={classes.mainContaienr}>
       <Grid item>
-        <Typography variant='h5' className={classes.fontWhite}>
+        <Typography
+          variant='h5'
+          className={[classes.fontWhite, classes.title].join(' ')}
+        >
           {title}
         </Typography>
       </Grid>

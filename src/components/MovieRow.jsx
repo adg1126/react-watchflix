@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
   mainContaienr: {
     margin: '2em',
-    overflowX: 'none'
+    overflowX: 'scroll'
   },
   fontWhite: { color: '#ffff' },
   postersContainer: {

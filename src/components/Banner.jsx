@@ -1,4 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
+import { secondsToTime } from '../utils/funcitions';
+import { imgBaseUrl } from '../utils/baseurls';
+import _ from 'lodash';
+import numeral from 'numeral';
 import {
   makeStyles,
   useTheme,
@@ -7,12 +11,12 @@ import {
   Typography,
   Button
 } from '@material-ui/core';
-import { imgBaseUrl } from '../utils/baseurls';
-import _ from 'lodash';
+import Rating from '@material-ui/lab/Rating';
+import { Star } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    height: '448px',
+    height: '488px',
     [theme.breakpoints.down('sm')]: {
       height: '500px'
     }
@@ -45,27 +49,41 @@ const useStyles = makeStyles(theme => ({
     }
   },
   fontWhite: { color: '#fff' },
+  fontGrey: {
+    color: '#fff',
+    fontWeight: '400',
+    opacity: '0.5'
+  },
+  fontSemiBold: { fontWeight: 'semi-bold' },
   title: { fontWeight: 'bold' },
   button: {
     ...theme.button,
     ...theme.buttonRedAnimation,
     color: 'white',
     textDecoration: 'none',
-    fontSize: '1.05em'
+    fontSize: '1.05em',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '0.9em'
+    }
+  },
+  showMoreSpan: {
+    cursor: 'pointer'
   }
 }));
 
-export default function Banner({ fetchBannerMovieStart, bannerMovie }) {
+export default function Banner({ bannerMovie, bannerButtons }) {
   const classes = useStyles();
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  useEffect(() => {
-    fetchBannerMovieStart();
-  }, [fetchBannerMovieStart]);
+  const [truncate, setTruncate] = useState(true);
 
-  const truncate = (str, n) =>
-    str?.length > n ? `${str.substr(0, n - 1)}...` : str;
+  const truncateText = (str, n) =>
+    str.length > n ? `${str.substr(0, n - 1)}...` : str;
+
+  const { h, m } = secondsToTime(bannerMovie?.runtime * 60);
+
+  const handleClickTruncate = () => setTruncate(!truncate);
 
   return !_.isEmpty(bannerMovie) ? (
     <Grid container cirection='column' className={classes.container}>
@@ -83,20 +101,93 @@ export default function Banner({ fetchBannerMovieStart, bannerMovie }) {
             className={classes.bannerContent}
             spacing={2}
           >
+            <Grid
+              item
+              container
+              direction='row'
+              alignItems='flex-end'
+              spacing={2}
+            >
+              <Grid item>
+                <Typography
+                  className={[classes.fontWhite, classes.title].join(' ')}
+                  variant={matchesSM ? 'h5' : 'h4'}
+                >
+                  {bannerMovie?.title ||
+                    bannerMovie?.name ||
+                    bannerMovie?.original_name}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography
+                  variant='h6'
+                  className={[classes.fontGrey, classes.title].join(' ')}
+                >
+                  ({new Date(bannerMovie?.release_date).getFullYear()})
+                </Typography>
+              </Grid>
+            </Grid>
             <Grid item>
               <Typography
-                className={[classes.fontWhite, classes.title].join(' ')}
-                variant='h4'
+                variant='body1'
+                className={[classes.fontWhite, classes.fontSemiBold].join(' ')}
               >
-                {bannerMovie?.title ||
-                  bannerMovie?.name ||
-                  bannerMovie?.original_name}
+                {bannerMovie?.genres
+                  .map(({ name }) => name.toUpperCase())
+                  .join(', ')}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography
+                variant='body1'
+                className={[classes.fontWhite].join(' ')}
+              >
+                {`${h}h ${m}m`}
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant='body1' className={classes.fontWhite}>
-                {truncate(bannerMovie?.overview, 150)}
+                {truncate
+                  ? truncateText(bannerMovie?.overview, 100)
+                  : bannerMovie.overview}{' '}
+                <span
+                  onClick={handleClickTruncate}
+                  className={[classes.showMoreSpan, classes.fontGrey].join(' ')}
+                >
+                  {truncate ? '[Show More]' : '[Show Less]'}
+                </span>
               </Typography>
+            </Grid>
+            <Grid
+              item
+              container
+              direction='row'
+              alignItems='center'
+              spacing={1}
+            >
+              <Grid item>
+                <Rating
+                  value={bannerMovie.vote_average / 2}
+                  precision={0.1}
+                  emptyIcon={
+                    <Star
+                      style={{ color: '#fff', opacity: '0.4' }}
+                      fontSize='inherit'
+                    />
+                  }
+                  readOnly
+                />
+              </Grid>
+              <Grid item>
+                <Typography variant='body1' className={classes.fontWhite}>
+                  {numeral(bannerMovie.vote_average / 2).format('0.0')}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant='body2' className={classes.fontWhite}>
+                  ({numeral(bannerMovie.vote_count).format('0,0')})
+                </Typography>
+              </Grid>
             </Grid>
             <Grid
               item
@@ -105,14 +196,18 @@ export default function Banner({ fetchBannerMovieStart, bannerMovie }) {
               alignItems='center'
               spacing={2}
             >
-              <Grid item>
-                <Button className={classes.button}>Play</Button>
-              </Grid>
-              <Grid item>
-                <Button href='#movies_container' className={classes.button}>
-                  VIEW LIBRARY
-                </Button>
-              </Grid>
+              {bannerButtons?.map((b, i) => (
+                <Grid item key={i}>
+                  <Button
+                    onClick={b?.handleClickPlay}
+                    href={b?.href}
+                    startIcon={b.icon}
+                    className={classes.button}
+                  >
+                    {b.text}
+                  </Button>
+                </Grid>
+              ))}
             </Grid>
           </Grid>
         </Grid>
@@ -121,7 +216,7 @@ export default function Banner({ fetchBannerMovieStart, bannerMovie }) {
           className={classes.bannerImage}
           style={{
             backgroundSize: 'cover',
-            backgroundImage: `url(${imgBaseUrl}/${bannerMovie?.backdrop_path})`,
+            backgroundImage: `url(${imgBaseUrl}/${bannerMovie.backdrop_path})`,
             backgroundPosition: 'top right'
           }}
         />

@@ -10,7 +10,7 @@ import {
   fetchTrailerUrlStart,
   fetchRecommendedMoviesStart
 } from '../redux/movies/moviesActions';
-import Movie from '../pages/Movie/Movie';
+import Movie from '../pages/Movie';
 
 const mapStateToProps = (state, ownProps) => {
   return {

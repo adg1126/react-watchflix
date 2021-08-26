@@ -1,7 +1,11 @@
 import { connect } from 'react-redux';
-import { fetchMoviesStart } from '../redux/movies/moviesActions';
+import {
+  fetchMoviesStart,
+  fetchBannerMovieStart
+} from '../redux/movies/moviesActions';
 import App from '../App';
 
 export default connect(null, {
-  fetchMoviesStart
+  fetchMoviesStart,
+  fetchBannerMovieStart
 })(App);

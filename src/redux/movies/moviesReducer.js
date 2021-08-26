@@ -5,7 +5,6 @@ import {
   FETCH_BANNER_MOVIE_START,
   FETCH_BANNER_MOVIE_SUCCESS,
   FETCH_BANNER_MOVIE_FAILURE,
-  FETCH_TRAILER_URL_START,
   FETCH_TRAILER_URL_SUCCESS,
   FETCH_TRAILER_URL_FAILURE,
   FETCH_MOVIE_START,
@@ -30,7 +29,6 @@ const moviesReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_MOVIES_START:
     case FETCH_BANNER_MOVIE_START:
-    case FETCH_TRAILER_URL_START:
     case FETCH_MOVIE_START:
     case FETCH_RECOMMENDED_MOVIES_START:
       return { ...state, isFetched: false };

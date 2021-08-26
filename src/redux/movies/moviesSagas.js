@@ -32,8 +32,7 @@ import {
 import { selectMovieType } from './moviesSelectors';
 
 const urls = {
-  trending: `/trending/all/week?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`,
-  netflixOriginals: `/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&with_networks=213`,
+  trending: `/trending/movie/week?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`,
   topRated: `/movie/top_rated?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`,
   actionMovies: `/discover/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&with_genres=28`,
   comedyMovies: `/discover/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&with_genres=35`,
@@ -49,7 +48,18 @@ function* fetchMoviesAsync() {
         const res = await fetch(`${baseUrl}${v}`);
         const { results } = await res.json();
 
-        return { [k]: results };
+        const movieArr = await Promise.all(
+          results.map(async ({ id }) => {
+            const res = await fetch(
+              `${baseUrl}/movie/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+            );
+            const movie = await res.json();
+
+            return movie;
+          })
+        );
+
+        return { [k]: movieArr };
       })
     );
 
@@ -63,9 +73,8 @@ function* fetchMoviesStart() {
   yield takeEvery(FETCH_MOVIES_START, fetchMoviesAsync);
 }
 
-function* fetchbannerMovieAsync() {
-  const moviesArr = yield select(selectMovieType('netflixOriginals'));
-
+function* fetchBannerMovieAsync() {
+  const moviesArr = yield select(selectMovieType('trending'));
   if (!_.isEmpty(moviesArr)) {
     yield put(fetchBannerMovieSuccess(_.sample(moviesArr)));
   } else {
@@ -76,7 +85,7 @@ function* fetchbannerMovieAsync() {
 function* fetchBannerMovieStart() {
   yield takeLatest(
     [FETCH_MOVIES_SUCCESS, FETCH_BANNER_MOVIE_START],
-    fetchbannerMovieAsync
+    fetchBannerMovieAsync
   );
 }
 
