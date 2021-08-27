@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import YouTube from 'react-youtube';
-import { movieCategories } from '../App';
+import { tvShowCategories } from '../App';
 import { Grid } from '@material-ui/core';
 import { PlayArrow, VideoLibrary } from '@material-ui/icons';
 import Banner from '../components/Banner';
-import MovieSectionContainer from '../containers/MovieSectionContainer';
+import TvShowSectionContainer from '../containers/TvShowSectionContainer';
 import Footer from '../components/Footer';
 
-export default function Home({
-  bannerMovie,
+export default function TvShows({
+  bannerTvShow,
   trailerUrl,
   fetchTrailerUrlStart
 }) {
   useEffect(() => {
-    if (!_.isEmpty(bannerMovie)) {
-      fetchTrailerUrlStart(bannerMovie.id);
+    if (!_.isEmpty(bannerTvShow)) {
+      fetchTrailerUrlStart(bannerTvShow.id);
     }
-  }, [bannerMovie, fetchTrailerUrlStart]);
+  }, [bannerTvShow, fetchTrailerUrlStart]);
 
   const [player, setPlayer] = useState(null);
   const [showPlayer, setShowPlayer] = useState(false);
@@ -49,7 +49,11 @@ export default function Home({
     <>
       <Grid container direction='column'>
         <Grid item>
-          <Banner banner={bannerMovie} bannerButtons={bannerButtons} />
+          <Banner
+            mediaType='tv'
+            banner={bannerTvShow}
+            bannerButtons={bannerButtons}
+          />
         </Grid>
         <Grid item style={{ display: showPlayer ? 'block' : 'none' }}>
           <YouTube
@@ -64,9 +68,9 @@ export default function Home({
             }}
           />
         </Grid>
-        {movieCategories.slice(0, 2).map((m, i) => (
+        {tvShowCategories.map((m, i) => (
           <Grid item key={i}>
-            <MovieSectionContainer {...m} />
+            <TvShowSectionContainer {...m} />
           </Grid>
         ))}
       </Grid>

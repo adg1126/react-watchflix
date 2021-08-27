@@ -6,8 +6,3 @@ body {
   overflow-x: hidden;
   background-color: #111;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}

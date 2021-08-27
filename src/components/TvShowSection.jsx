@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MovieSection({ title, isLargeRow, movies }) {
+export default function TvShowSection({ title, isLargeRow, tvShows }) {
   const classes = useStyles();
 
   return (
@@ -27,7 +27,7 @@ export default function MovieSection({ title, isLargeRow, movies }) {
           {title}
         </Typography>
       </Grid>
-      <MediaRow mediaArr={movies} isLargeRow={isLargeRow} />
+      <MediaRow mediaArr={tvShows} mediaType='tv' isLargeRow={isLargeRow} />
     </Grid>
   );
 }

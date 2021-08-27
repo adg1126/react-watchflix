@@ -101,6 +101,7 @@ function* fetchTrailerUrlAsync({ payload }) {
 function* fetchTrailerUrlStart() {
   yield takeEvery(FETCH_TRAILER_URL_START, fetchTrailerUrlAsync);
 }
+
 function* fetchMovieAsync({ payload }) {
   try {
     const res = yield fetch(

@@ -59,7 +59,6 @@ const useStyles = makeStyles(theme => ({
   button: {
     ...theme.button,
     ...theme.buttonRedAnimation,
-    color: 'white',
     textDecoration: 'none',
     fontSize: '1.05em',
     [theme.breakpoints.down('sm')]: {
@@ -71,7 +70,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Banner({ bannerMovie, bannerButtons }) {
+export default function Banner({ banner, mediaType, bannerButtons }) {
   const classes = useStyles();
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -81,11 +80,11 @@ export default function Banner({ bannerMovie, bannerButtons }) {
   const truncateText = (str, n) =>
     str.length > n ? `${str.substr(0, n - 1)}...` : str;
 
-  const { h, m } = secondsToTime(bannerMovie?.runtime * 60);
+  const { h, m } = secondsToTime(banner?.runtime * 60);
 
   const handleClickTruncate = () => setTruncate(!truncate);
 
-  return !_.isEmpty(bannerMovie) ? (
+  return !_.isEmpty(banner) ? (
     <Grid container cirection='column' className={classes.container}>
       <Grid item container direction='row' justifyContent='flex-end'>
         <Grid
@@ -101,6 +100,11 @@ export default function Banner({ bannerMovie, bannerButtons }) {
             className={classes.bannerContent}
             spacing={2}
           >
+            <Grid item>
+              <Typography className={[classes.fontGrey].join(' ')} variant='h6'>
+                {mediaType === 'tv' ? 'TV SHOW' : 'MOVIE'}
+              </Typography>
+            </Grid>
             <Grid
               item
               container
@@ -113,18 +117,25 @@ export default function Banner({ bannerMovie, bannerButtons }) {
                   className={[classes.fontWhite, classes.title].join(' ')}
                   variant={matchesSM ? 'h5' : 'h4'}
                 >
-                  {bannerMovie?.title ||
-                    bannerMovie?.name ||
-                    bannerMovie?.original_name}
+                  {banner?.title || banner?.name || banner?.original_name}
                 </Typography>
               </Grid>
               <Grid item>
-                <Typography
-                  variant='h6'
-                  className={[classes.fontGrey, classes.title].join(' ')}
-                >
-                  ({new Date(bannerMovie?.release_date).getFullYear()})
-                </Typography>
+                {!_.isEmpty(banner.release_date) ? (
+                  <Typography variant='h6' className={classes.fontGrey}>
+                    ({new Date(banner?.release_date).getFullYear()})
+                  </Typography>
+                ) : (
+                  <Typography variant='h6' className={classes.fontGrey}>
+                    (
+                    {`${new Date(
+                      banner?.first_air_date
+                    ).getFullYear()} - ${new Date(
+                      banner?.last_air_date
+                    ).getFullYear()}`}
+                    )
+                  </Typography>
+                )}
               </Grid>
             </Grid>
             <Grid item>
@@ -132,24 +143,33 @@ export default function Banner({ bannerMovie, bannerButtons }) {
                 variant='body1'
                 className={[classes.fontWhite, classes.fontSemiBold].join(' ')}
               >
-                {bannerMovie?.genres
+                {banner?.genres
                   .map(({ name }) => name.toUpperCase())
                   .join(', ')}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography
-                variant='body1'
-                className={[classes.fontWhite].join(' ')}
-              >
-                {`${h}h ${m}m`}
-              </Typography>
+              {!_.isEmpty(banner.runtime) ? (
+                <Typography
+                  variant='body1'
+                  className={[classes.fontWhite].join(' ')}
+                >
+                  {`${h}h ${m}m`}
+                </Typography>
+              ) : (
+                <Typography
+                  variant='body1'
+                  className={[classes.fontWhite].join(' ')}
+                >
+                  {`${banner?.number_of_seasons} SEASONS, ${banner?.number_of_episodes} EPISODES`}
+                </Typography>
+              )}
             </Grid>
             <Grid item>
               <Typography variant='body1' className={classes.fontWhite}>
                 {truncate
-                  ? truncateText(bannerMovie?.overview, 100)
-                  : bannerMovie.overview}{' '}
+                  ? truncateText(banner?.overview, 100)
+                  : banner.overview}{' '}
                 <span
                   onClick={handleClickTruncate}
                   className={[classes.showMoreSpan, classes.fontGrey].join(' ')}
@@ -167,7 +187,7 @@ export default function Banner({ bannerMovie, bannerButtons }) {
             >
               <Grid item>
                 <Rating
-                  value={bannerMovie.vote_average / 2}
+                  value={banner.vote_average / 2}
                   precision={0.1}
                   emptyIcon={
                     <Star
@@ -180,12 +200,12 @@ export default function Banner({ bannerMovie, bannerButtons }) {
               </Grid>
               <Grid item>
                 <Typography variant='body1' className={classes.fontWhite}>
-                  {numeral(bannerMovie.vote_average / 2).format('0.0')}
+                  {numeral(banner.vote_average / 2).format('0.0')}
                 </Typography>
               </Grid>
               <Grid item>
                 <Typography variant='body2' className={classes.fontWhite}>
-                  ({numeral(bannerMovie.vote_count).format('0,0')})
+                  ({numeral(banner.vote_count).format('0,0')})
                 </Typography>
               </Grid>
             </Grid>
@@ -216,7 +236,7 @@ export default function Banner({ bannerMovie, bannerButtons }) {
           className={classes.bannerImage}
           style={{
             backgroundSize: 'cover',
-            backgroundImage: `url(${imgBaseUrl}/${bannerMovie.backdrop_path})`,
+            backgroundImage: `url(${imgBaseUrl}/${banner.backdrop_path})`,
             backgroundPosition: 'top right'
           }}
         />

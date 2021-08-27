@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import _ from 'lodash';
 
 const selectMovies = state => state.movies;
 
@@ -8,7 +9,9 @@ export const selectMovieList = createSelector(
 );
 
 export const selectMovieType = movieType =>
-  createSelector([selectMovieList], movieList => movieList[movieType]);
+  createSelector([selectMovieList], movieList =>
+    !_.isEmpty(movieList) ? movieList[movieType] : []
+  );
 
 export const selectMovie = createSelector(
   [selectMovies],

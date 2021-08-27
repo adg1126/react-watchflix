@@ -4,10 +4,6 @@ import { imgBaseUrl } from '../utils/baseurls';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  mainContaienr: {
-    margin: '2em',
-    overflowX: 'scroll'
-  },
   fontWhite: { color: '#ffff' },
   postersContainer: {
     width: '95vw',
@@ -38,17 +34,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MovieRow({ movies, isLargeRow }) {
+export default function MediaRow({ mediaArr, mediaType, isLargeRow }) {
   const classes = useStyles();
 
   const handleClickRedirect = movie => {
-    history.push(`/title/${movie.id}`);
+    mediaType === 'tv'
+      ? history.push(`/tv_shows/${movie.id}`)
+      : history.push(`/movies/${movie.id}`);
   };
 
   return (
     <div className={classes.postersContainer}>
-      {movies && movies.length
-        ? movies.map(m => (
+      {mediaArr && mediaArr.length
+        ? mediaArr.map(m => (
             <div key={m.id}>
               <img
                 className={[

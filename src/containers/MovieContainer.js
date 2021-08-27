@@ -2,8 +2,7 @@ import { connect } from 'react-redux';
 import {
   selectMovie,
   selectRecommendedMovies,
-  selectTrailerUrl,
-  selecIsFetched
+  selectTrailerUrl
 } from '../redux/movies/moviesSelectors';
 import {
   fetchMovieStart,
@@ -17,8 +16,7 @@ const mapStateToProps = (state, ownProps) => {
     movieId: ownProps.match.params.id,
     movie: selectMovie(state),
     recommendedMovies: selectRecommendedMovies(state),
-    trailerUrl: selectTrailerUrl(state),
-    isFetched: selecIsFetched(state)
+    trailerUrl: selectTrailerUrl(state)
   };
 };
 

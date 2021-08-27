@@ -14,26 +14,26 @@ const useStyles = makeStyles(theme => ({
   moviesSectionTitle: { margin: '1em 0', fontWeight: 'bold' }
 }));
 
-export default function Movie({
-  movieId,
-  movie,
-  recommendedMovies,
+export default function TvShow({
+  tvShowId,
+  bannerTvShow,
+  recommendedTvShows,
   trailerUrl,
-  fetchMovieStart,
+  fetchTvShowStart,
   fetchTrailerUrlStart,
-  fetchRecommendedMoviesStart
+  fetchRecommendedTvShowsStart
 }) {
   const classes = useStyles();
 
   useEffect(() => {
-    fetchMovieStart(movieId);
-    fetchTrailerUrlStart(movieId);
-    fetchRecommendedMoviesStart(movieId);
+    fetchTvShowStart(tvShowId);
+    fetchTrailerUrlStart(tvShowId);
+    fetchRecommendedTvShowsStart(tvShowId);
   }, [
-    movieId,
-    fetchMovieStart,
+    tvShowId,
+    fetchTvShowStart,
     fetchTrailerUrlStart,
-    fetchRecommendedMoviesStart
+    fetchRecommendedTvShowsStart
   ]);
 
   const [player, setPlayer] = useState(null);
@@ -61,7 +61,7 @@ export default function Movie({
     }
   ];
 
-  return !_.isEmpty(movie) ? (
+  return !_.isEmpty(bannerTvShow) ? (
     <>
       <Grid
         container
@@ -70,7 +70,11 @@ export default function Movie({
         className={classes.mainContainer}
       >
         <Grid item>
-          <Banner banner={movie} bannerButtons={bannerButtons} />
+          <Banner
+            banner={bannerTvShow}
+            mediaType='tv'
+            bannerButtons={bannerButtons}
+          />
         </Grid>
         <Grid item style={{ display: showPlayer ? 'block' : 'none' }}>
           <YouTube
@@ -94,11 +98,11 @@ export default function Movie({
                   ' '
                 )}
               >
-                Recommended Movies
+                Recommended TV Shows
               </Typography>
             </Grid>
             <Grid item>
-              <MediaRow mediaArr={recommendedMovies} />
+              <MediaRow mediaType='tv' mediaArr={recommendedTvShows} />
             </Grid>
           </Grid>
         </Grid>

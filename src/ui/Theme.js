@@ -46,9 +46,10 @@ export default createTheme({
     }
   },
   typography: {
-    fontFamily: ['Open Sans', 'sans-serif'].join(',')
+    fontFamily: ['Work Sans', 'sans-serif'].join(',')
   },
   button: {
+    color: '#fff',
     borderRadius: '30px',
     padding: '0.3em 1em',
     [breakpoints.down('sm')]: {
@@ -57,11 +58,9 @@ export default createTheme({
   },
   buttonIndigoAnimation: {
     position: 'relative',
-    color: mainIndigo,
     border: `1px solid ${mainIndigo}`,
     zIndex: 1,
     '&:hover': {
-      color: 'white',
       border: `1px solid ${mainIndigo}`
     },
     '&::before': {
@@ -82,11 +81,9 @@ export default createTheme({
   },
   buttonGreenAnimation: {
     position: 'relative',
-    color: green,
     border: `1px solid ${green}`,
     zIndex: 1,
     '&:hover': {
-      color: white,
       border: `1px solid ${green}`
     },
     '&::before': {
@@ -107,11 +104,9 @@ export default createTheme({
   },
   buttonGreyAnimation: {
     position: 'relative',
-    color: grey900,
     border: `1px solid ${grey600}`,
     zIndex: 1,
     '&:hover': {
-      color: white,
       border: `1px solid ${grey600}`
     },
     '&::before': {
@@ -132,11 +127,9 @@ export default createTheme({
   },
   buttonRedAnimation: {
     position: 'relative',
-    color: red,
     border: `1px solid ${red}`,
     zIndex: 1,
     '&:hover': {
-      color: white,
       border: `1px solid ${red}`
     },
     '&::before': {

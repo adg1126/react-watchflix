@@ -8,7 +8,7 @@ import Banner from '../components/Banner';
 import MovieSectionContainer from '../containers/MovieSectionContainer';
 import Footer from '../components/Footer';
 
-export default function Home({
+export default function Movie({
   bannerMovie,
   trailerUrl,
   fetchTrailerUrlStart
@@ -64,7 +64,7 @@ export default function Home({
             }}
           />
         </Grid>
-        {movieCategories.slice(0, 2).map((m, i) => (
+        {movieCategories.map((m, i) => (
           <Grid item key={i}>
             <MovieSectionContainer {...m} />
           </Grid>
