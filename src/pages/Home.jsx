@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import YouTube from 'react-youtube';
+import { movieCategories } from '../App';
 import { Grid } from '@material-ui/core';
 import { PlayArrow, VideoLibrary } from '@material-ui/icons';
 import Banner from '../components/Banner';
 import MovieSectionContainer from '../containers/MovieSectionContainer';
-import { movieCategories } from '../App';
+import Footer from '../components/Footer';
 
 export default function Home({
   bannerMovie,
@@ -45,28 +46,31 @@ export default function Home({
   ];
 
   return (
-    <Grid container direction='column'>
-      <Grid item>
-        <Banner bannerMovie={bannerMovie} bannerButtons={bannerButtons} />
-      </Grid>
-      <Grid item style={{ display: showPlayer ? 'block' : 'none' }}>
-        <YouTube
-          videoId={trailerUrl}
-          onReady={onPlayerReady}
-          opts={{
-            height: '400',
-            width: '100%',
-            playerVars: {
-              autoplay: 0
-            }
-          }}
-        />
-      </Grid>
-      {movieCategories.map((m, i) => (
-        <Grid item key={i}>
-          <MovieSectionContainer {...m} />
+    <>
+      <Grid container direction='column'>
+        <Grid item>
+          <Banner bannerMovie={bannerMovie} bannerButtons={bannerButtons} />
         </Grid>
-      ))}
-    </Grid>
+        <Grid item style={{ display: showPlayer ? 'block' : 'none' }}>
+          <YouTube
+            videoId={trailerUrl}
+            onReady={onPlayerReady}
+            opts={{
+              height: '400',
+              width: '100%',
+              playerVars: {
+                autoplay: 0
+              }
+            }}
+          />
+        </Grid>
+        {movieCategories.map((m, i) => (
+          <Grid item key={i}>
+            <MovieSectionContainer {...m} />
+          </Grid>
+        ))}
+      </Grid>
+      <Footer />
+    </>
   );
 }

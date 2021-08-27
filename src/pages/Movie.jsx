@@ -5,6 +5,7 @@ import { makeStyles, Grid, Typography } from '@material-ui/core';
 import { PlayArrow } from '@material-ui/icons';
 import MovieRow from '../components/MovieRow';
 import Banner from '../components/Banner';
+import Footer from '../components/Footer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {},
@@ -61,45 +62,48 @@ export default function Movie({
   ];
 
   return !_.isEmpty(movie) ? (
-    <Grid
-      container
-      direction='column'
-      spacing={10}
-      className={classes.mainContainer}
-    >
-      <Grid item>
-        <Banner bannerMovie={movie} bannerButtons={bannerButtons} />
-      </Grid>
-      <Grid item style={{ display: showPlayer ? 'block' : 'none' }}>
-        <YouTube
-          videoId={trailerUrl}
-          onReady={onPlayerReady}
-          opts={{
-            height: '400',
-            width: '100%',
-            playerVars: {
-              autoplay: 0
-            }
-          }}
-        />
-      </Grid>
-      <Grid item container direction='column' alignItems='center'>
-        <Grid item container direction='column' style={{ width: '95%' }}>
-          <Grid item>
-            <Typography
-              variant='h5'
-              className={[classes.fontWhite, classes.moviesSectionTitle].join(
-                ' '
-              )}
-            >
-              Recommended Movies
-            </Typography>
-          </Grid>
-          <Grid item>
-            <MovieRow movies={recommendedMovies} />
+    <>
+      <Grid
+        container
+        direction='column'
+        spacing={10}
+        className={classes.mainContainer}
+      >
+        <Grid item>
+          <Banner bannerMovie={movie} bannerButtons={bannerButtons} />
+        </Grid>
+        <Grid item style={{ display: showPlayer ? 'block' : 'none' }}>
+          <YouTube
+            videoId={trailerUrl}
+            onReady={onPlayerReady}
+            opts={{
+              height: '400',
+              width: '100%',
+              playerVars: {
+                autoplay: 0
+              }
+            }}
+          />
+        </Grid>
+        <Grid item container direction='column' alignItems='center'>
+          <Grid item container direction='column' style={{ width: '95%' }}>
+            <Grid item>
+              <Typography
+                variant='h5'
+                className={[classes.fontWhite, classes.moviesSectionTitle].join(
+                  ' '
+                )}
+              >
+                Recommended Movies
+              </Typography>
+            </Grid>
+            <Grid item>
+              <MovieRow movies={recommendedMovies} />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+      <Footer />
+    </>
   ) : null;
 }

@@ -7,8 +7,8 @@ import history from './history';
 
 import Appbar from './components/Appbar';
 import HomeContainer from './containers/HomeContainer';
-import ErrorBoundary from './components/ErrorBoundary/Errorboundary';
-import Spinner from './components/Spinner';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import Spinner from './components/Spinner/Spinner';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import CustomSwitch from './components/CustomSwitch';
 const MovieContainer = lazy(() => import('./containers/MovieContainer'));
