@@ -1,6 +1,6 @@
 import React from 'react';
 import history from '../history';
-import { makeStyles, Typography, Button } from '@material-ui/core';
+import { makeStyles, Typography, Button, Paper } from '@material-ui/core';
 import ImageOverlay from '../components/ImageOverlay';
 import Auth from '../components/Auth';
 
@@ -15,10 +15,19 @@ const useStyles = makeStyles(theme => ({
       padding: '0.8em 1.4em',
       width: '85%'
     }
+  },
+  errMessagePaper: {
+    backgroundColor: theme.palette.primary.main,
+    color: '#fff',
+    padding: '0.5em 1em',
+    borderRadius: '25px'
+  },
+  errMessageText: {
+    fontWeight: 'bold'
   }
 }));
 
-const Signin = ({ googleSignInStart, emailSignInStart }) => {
+const Signin = ({ errMessage, googleSignInStart, emailSignInStart }) => {
   const classes = useStyles();
 
   const onSubmit = async ({ email, password }) => {
@@ -64,7 +73,16 @@ const Signin = ({ googleSignInStart, emailSignInStart }) => {
           {' '}
           <strong>Create an account</strong>
         </span>
-      </Typography>
+      </Typography>,
+      <Paper
+        style={{ display: errMessage ? 'block' : 'none' }}
+        className={classes.errMessagePaper}
+        elevation={0}
+      >
+        <Typography className={classes.errMessageText} variant='body1'>
+          ERROR: {errMessage}
+        </Typography>
+      </Paper>
     ]
   };
 
