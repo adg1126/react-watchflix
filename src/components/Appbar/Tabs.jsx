@@ -76,6 +76,7 @@ export default function Tabs({
             />
           ) : r.name === 'SIGN OUT' ? (
             <Tab
+              style={{ color: '#fff' }}
               key={i}
               component={Button}
               onClick={handleCickSignout}

@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: '400',
     opacity: '0.8'
   },
-  title: { fontSize: '1.1em', fontWeight: 'bold' },
+  title: { fontWeight: 'bold' },
   avatar: {
     marginRight: '0.3em',
     padding: '0.3em',
@@ -98,7 +98,8 @@ const useStyles = makeStyles(theme => ({
   card: {
     padding: '0.5 0em',
     background: 'rgba(10, 10, 10, 1)'
-  }
+  },
+  cardTitle: { fontSize: '1.1em', fontWeight: 'bold' }
 }));
 
 export default function Profile({ currentUser, signOutStart }) {
@@ -121,7 +122,7 @@ export default function Profile({ currentUser, signOutStart }) {
           <Grid item>
             <Typography
               variant='body1'
-              className={[classes.title, classes.fontWhite].join(' ')}
+              className={[classes.cardTitle, classes.fontWhite].join(' ')}
             >
               {title}
             </Typography>
@@ -242,9 +243,9 @@ export default function Profile({ currentUser, signOutStart }) {
       <Grid item>
         <Typography
           variant={matchesSM ? 'h5' : 'h4'}
-          className={classes.fontWhite}
+          className={[classes.fontWhite, classes.title].join(' ')}
         >
-          Manage your subscriptions
+          Manage your subscription
         </Typography>
       </Grid>
       <Grid item container direction='row' justifyContent='center' spacing={2}>
