@@ -8,7 +8,7 @@ import {
 
 const INITIAL_STATE = {
   currentUser: null,
-  error: null
+  errMessage: null
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -17,16 +17,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentUser: action.payload,
-        error: null
+        errMessage: null
       };
     case SIGN_OUT_SUCCESS:
-      return { ...state, currentUser: null, error: null };
+      return { ...state, currentUser: null, errMessage: null };
     case SIGN_IN_FAILURE:
     case SIGN_OUT_FAILURE:
     case SIGN_UP_FAILURE:
       return {
         ...state,
-        error: action.payload
+        errMessage: action.payload
       };
     default:
       return state;
