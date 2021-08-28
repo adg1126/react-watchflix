@@ -17,7 +17,8 @@ const MovieContainer = lazy(() => import('./containers/MovieContainer')),
   SignupContainer = lazy(() => import('./containers/SignupContainer')),
   MoviesContainer = lazy(() => import('./containers/MoviesContainer')),
   TvShowsContainer = lazy(() => import('./containers/TvShowsContainer')),
-  TvShowContainer = lazy(() => import('./containers/TvShowContainer'));
+  TvShowContainer = lazy(() => import('./containers/TvShowContainer')),
+  ProfileContainer = lazy(() => import('./containers/ProfileContainer'));
 
 export const movieCategories = [
   { title: 'Trending Movies', movieType: 'trending', isLargeRow: true },
@@ -79,6 +80,7 @@ function App({
                 <Route exact path='/movies' component={MoviesContainer} />
                 <Route exact path='/tv_shows' component={TvShowsContainer} />
                 <Route exact path='/tv_shows/:id' component={TvShowContainer} />
+                <Route exact path='/profile' component={ProfileContainer} />
                 <Route
                   exact
                   path='/signin'
