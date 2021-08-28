@@ -19,7 +19,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   profile: { color: '#fff' },
-  avatar: { marginRight: '0.5em' },
+  avatar: {
+    marginRight: '0.5em',
+    backgroundColor: theme.palette.primary.main,
+    opacity: '0.8'
+  },
   profileTab: {
     '& .MuiTab-wrapper': {
       flexDirection: 'row',
@@ -59,7 +63,7 @@ export default function Tabs({
               key={i}
               icon={
                 <Avatar
-                  alt='Remy Sharp'
+                  alt={currentUser.displayName}
                   src='/broken-image.jpg'
                   className={classes.avatar}
                 >

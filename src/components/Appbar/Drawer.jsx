@@ -12,7 +12,16 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles(theme => ({
-  drawer: { backgroundColor: '#111', width: '50%' },
+  drawer: {
+    backgroundColor: '#111',
+    width: '30%',
+    [theme.breakpoints.down('sm')]: {
+      width: '35%'
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '80%'
+    }
+  },
   toolbar: {
     ...theme.mixins.toolbar,
     marginBottom: '3em',
@@ -30,7 +39,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   drawerIcon: { fill: theme.palette.primary.main },
-  drawerList: { marginLeft: '1em' },
+  drawerList: {
+    margin: '0 auto',
+    padding: '0 1em',
+    [theme.breakpoints.down('sm')]: { padding: '0 0.5em' }
+  },
   drawerItemText: {
     ...theme.typography.tab,
     color: 'white',
@@ -41,7 +54,11 @@ const useStyles = makeStyles(theme => ({
       opacity: 1
     }
   },
-  avatar: { marginRight: '0.5em' }
+  avatar: {
+    marginRight: '0.5em',
+    backgroundColor: theme.palette.primary.main,
+    opacity: '0.8'
+  }
 }));
 
 const renderList = (
@@ -70,7 +87,7 @@ const renderList = (
           classes={{ selected: classes.drawerItemSelected }}
         >
           <Avatar
-            alt='Remy Sharp'
+            alt={currentUser.displayName}
             src='/broken-image.jpg'
             className={classes.avatar}
           >
