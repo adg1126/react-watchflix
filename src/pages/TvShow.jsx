@@ -18,22 +18,23 @@ export default function TvShow({
   tvShowId,
   bannerTvShow,
   recommendedTvShows,
+  similarTvShows,
   trailerUrl,
   fetchTvShowStart,
   fetchTrailerUrlStart,
-  fetchRecommendedTvShowsStart
+  fetchSimilarAndRecommendedTvShowsStart
 }) {
   const classes = useStyles();
 
   useEffect(() => {
     fetchTvShowStart(tvShowId);
     fetchTrailerUrlStart(tvShowId);
-    fetchRecommendedTvShowsStart(tvShowId);
+    fetchSimilarAndRecommendedTvShowsStart(tvShowId);
   }, [
     tvShowId,
     fetchTvShowStart,
     fetchTrailerUrlStart,
-    fetchRecommendedTvShowsStart
+    fetchSimilarAndRecommendedTvShowsStart
   ]);
 
   const [player, setPlayer] = useState(null);
@@ -103,6 +104,21 @@ export default function TvShow({
             </Grid>
             <Grid item>
               <MediaRow mediaType='tv' mediaArr={recommendedTvShows} />
+            </Grid>
+          </Grid>
+          <Grid item container direction='column' style={{ width: '95%' }}>
+            <Grid item>
+              <Typography
+                variant='h5'
+                className={[classes.fontWhite, classes.moviesSectionTitle].join(
+                  ' '
+                )}
+              >
+                Similar TV Shows
+              </Typography>
+            </Grid>
+            <Grid item>
+              <MediaRow mediaType='tv' mediaArr={similarTvShows} />
             </Grid>
           </Grid>
         </Grid>

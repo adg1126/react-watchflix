@@ -33,7 +33,21 @@ export const selecIsFetched = createSelector(
   movies => movies.isFetched
 );
 
-export const selectRecommendedMovies = createSelector(
+export const selectSimilarAndRecommendedMovies = createSelector(
   [selectMovies],
-  movies => movies.recommendedMovies
+  movies => movies.similarAndRecommended
+);
+
+export const selectSimilarMovies = createSelector(
+  [selectSimilarAndRecommendedMovies],
+  similarAndRecommended =>
+    !_.isEmpty(similarAndRecommended) ? similarAndRecommended.similarMovies : {}
+);
+
+export const selectRecommendedMovies = createSelector(
+  [selectSimilarAndRecommendedMovies],
+  similarAndRecommended =>
+    !_.isEmpty(similarAndRecommended)
+      ? similarAndRecommended.recommendedMovies
+      : {}
 );

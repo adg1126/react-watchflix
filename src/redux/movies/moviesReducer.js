@@ -10,9 +10,9 @@ import {
   FETCH_MOVIE_START,
   FETCH_MOVIE_SUCCESS,
   FETCH_MOVIE_FAILURE,
-  FETCH_RECOMMENDED_MOVIES_START,
-  FETCH_RECOMMENDED_MOVIES_SUCCESS,
-  FETCH_RECOMMENDED_MOVIES_FAILURE
+  FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_START,
+  FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_SUCCESS,
+  FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_FAILURE
 } from './moviesActionTypes';
 
 const INITIAL_STATE = {
@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   bannerMovie: null,
   trailerUrl: null,
   movie: null,
-  recommendedMovies: [],
+  similarAndRecommended: {},
   movieList: {}
 };
 
@@ -30,7 +30,7 @@ const moviesReducer = (state = INITIAL_STATE, action) => {
     case FETCH_MOVIES_START:
     case FETCH_BANNER_MOVIE_START:
     case FETCH_MOVIE_START:
-    case FETCH_RECOMMENDED_MOVIES_START:
+    case FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_START:
       return { ...state, isFetched: false };
     case FETCH_MOVIES_SUCCESS:
       return {
@@ -44,13 +44,17 @@ const moviesReducer = (state = INITIAL_STATE, action) => {
       return { ...state, trailerUrl: action.payload };
     case FETCH_MOVIE_SUCCESS:
       return { ...state, isFetched: true, movie: action.payload };
-    case FETCH_RECOMMENDED_MOVIES_SUCCESS:
-      return { ...state, isFetched: true, recommendedMovies: action.payload };
+    case FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_SUCCESS:
+      return {
+        ...state,
+        isFetched: true,
+        similarAndRecommended: action.payload
+      };
     case FETCH_MOVIES_FAILURE:
     case FETCH_BANNER_MOVIE_FAILURE:
     case FETCH_TRAILER_URL_FAILURE:
     case FETCH_MOVIE_FAILURE:
-    case FETCH_RECOMMENDED_MOVIES_FAILURE:
+    case FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_FAILURE:
       return { ...state, isFetched: false, errMessage: action.payload };
     default:
       return state;

@@ -2,12 +2,13 @@ import { connect } from 'react-redux';
 import {
   selectMovie,
   selectRecommendedMovies,
+  selectSimilarMovies,
   selectTrailerUrl
 } from '../redux/movies/moviesSelectors';
 import {
   fetchMovieStart,
   fetchTrailerUrlStart,
-  fetchRecommendedMoviesStart
+  fetchSimilarAndRecommendedMoviesStart
 } from '../redux/movies/moviesActions';
 import Movie from '../pages/Movie';
 
@@ -16,6 +17,7 @@ const mapStateToProps = (state, ownProps) => {
     movieId: ownProps.match.params.id,
     movie: selectMovie(state),
     recommendedMovies: selectRecommendedMovies(state),
+    similarMovies: selectSimilarMovies(state),
     trailerUrl: selectTrailerUrl(state)
   };
 };
@@ -23,5 +25,5 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, {
   fetchMovieStart,
   fetchTrailerUrlStart,
-  fetchRecommendedMoviesStart
+  fetchSimilarAndRecommendedMoviesStart
 })(Movie);

@@ -33,7 +33,23 @@ export const selectTvShow = createSelector(
   tv_shows => tv_shows?.tvShow
 );
 
-export const selectRecommendedTvShows = createSelector(
+export const selectSimilarAndRecommendedTvShows = createSelector(
   [selectTvShows],
-  tv_shows => tv_shows?.recommendedTvShows
+  tv_shows => tv_shows.similarAndRecommended
+);
+
+export const selectSimilarTvShows = createSelector(
+  [selectSimilarAndRecommendedTvShows],
+  similarAndRecommended =>
+    !_.isEmpty(similarAndRecommended)
+      ? similarAndRecommended.similarTvShows
+      : {}
+);
+
+export const selectRecommendedTvShows = createSelector(
+  [selectSimilarAndRecommendedTvShows],
+  similarAndRecommended =>
+    !_.isEmpty(similarAndRecommended)
+      ? similarAndRecommended.recommendedTvShows
+      : {}
 );

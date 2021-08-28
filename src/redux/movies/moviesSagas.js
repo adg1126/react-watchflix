@@ -18,8 +18,8 @@ import {
   fetchTrailerUrlFailure,
   fetchMovieSuccess,
   fetchMovieFailure,
-  fetchRecommendedMoviesSuccess,
-  fetchRecommendedMoviesFailure
+  fetchSimilarAndRecommendedMoviesSuccess,
+  fetchSimilarRecommendedMoviesFailure
 } from './moviesActions';
 import {
   FETCH_MOVIES_START,
@@ -27,7 +27,7 @@ import {
   FETCH_MOVIES_SUCCESS,
   FETCH_TRAILER_URL_START,
   FETCH_MOVIE_START,
-  FETCH_RECOMMENDED_MOVIES_START
+  FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_START
 } from './moviesActionTypes';
 import { selectMovieType } from './moviesSelectors';
 
@@ -118,21 +118,35 @@ function* fetchMovieStart() {
   yield takeEvery(FETCH_MOVIE_START, fetchMovieAsync);
 }
 
-function* fetchRecommendedMoviesAsync({ payload }) {
+function* fetchSimilarAndRecommendedMoviesAsync({ payload }) {
   try {
     const res = yield fetch(
       `${baseUrl}/movie/${payload}/recommendations?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
     );
-    const { results } = yield res.json();
+    const { results: recommended } = yield res.json();
 
-    yield put(fetchRecommendedMoviesSuccess(results));
+    const res1 = yield fetch(
+      `${baseUrl}/movie/${payload}/similar?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+    );
+
+    const { results: similar } = yield res1.json();
+
+    yield put(
+      fetchSimilarAndRecommendedMoviesSuccess({
+        recommendedMovies: recommended,
+        similarMovies: similar
+      })
+    );
   } catch (err) {
-    yield put(fetchRecommendedMoviesFailure(err.message));
+    yield put(fetchSimilarRecommendedMoviesFailure(err.message));
   }
 }
 
-function* fetchRecommendedMoviesStart() {
-  yield takeEvery(FETCH_RECOMMENDED_MOVIES_START, fetchRecommendedMoviesAsync);
+function* fetchSimilarAndRecommendedMoviesStart() {
+  yield takeEvery(
+    FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_START,
+    fetchSimilarAndRecommendedMoviesAsync
+  );
 }
 
 export function* moviesSagas() {
@@ -141,6 +155,6 @@ export function* moviesSagas() {
     call(fetchBannerMovieStart),
     call(fetchTrailerUrlStart),
     call(fetchMovieStart),
-    call(fetchRecommendedMoviesStart)
+    call(fetchSimilarAndRecommendedMoviesStart)
   ]);
 }

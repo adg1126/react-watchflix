@@ -19,8 +19,8 @@ import {
   fetchTrailerUrlFailure,
   fetchTvShowSuccess,
   fetchTvShowFailure,
-  fetchRecommendedTvShowsSuccess,
-  fetchRecommendedTvShowsFailure
+  fetchSimilarAndRecommendedTvShowsSuccess,
+  fetchSimilarAndRecommendedTvShowsFailure
 } from './TvShowsActions';
 import {
   FETCH_TV_SHOWS_START,
@@ -28,7 +28,7 @@ import {
   FETCH_BANNER_TV_SHOW_START,
   FETCH_TRAILER_URL_START,
   FETCH_TV_SHOW_START,
-  FETCH_RECOMMENDED_TV_SHOWS_START
+  FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_START
 } from './TvShowsActionTypes';
 
 const urls = {
@@ -115,23 +115,33 @@ function* fetchTvShowStart() {
   yield takeEvery(FETCH_TV_SHOW_START, fetchTvShowAsync);
 }
 
-function* fetchRecommendedTvShowsAsync({ payload }) {
+function* fetchSimilerAndRecommendedTvShowsAsync({ payload }) {
   try {
     const res = yield fetch(
       `${baseUrl}/tv/${payload}/recommendations?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
     );
-    const { results } = yield res.json();
+    const { results: recommended } = yield res.json();
 
-    yield put(fetchRecommendedTvShowsSuccess(results));
+    const res1 = yield fetch(
+      `${baseUrl}/tv/${payload}/similar?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+    );
+    const { results: similar } = yield res1.json();
+
+    yield put(
+      fetchSimilarAndRecommendedTvShowsSuccess({
+        recommendedTvShows: recommended,
+        similarTvShows: similar
+      })
+    );
   } catch (err) {
-    yield put(fetchRecommendedTvShowsFailure(err.message));
+    yield put(fetchSimilarAndRecommendedTvShowsFailure(err.message));
   }
 }
 
-function* fetchRecommendedTvShowsStart() {
+function* fetchSimilarAndRecommendedTvShowsStart() {
   yield takeEvery(
-    FETCH_RECOMMENDED_TV_SHOWS_START,
-    fetchRecommendedTvShowsAsync
+    FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_START,
+    fetchSimilerAndRecommendedTvShowsAsync
   );
 }
 
@@ -141,6 +151,6 @@ export function* TvShowsSagas() {
     call(fetchBannerTvShowStart),
     call(fetchTrailerUrlStart),
     call(fetchTvShowStart),
-    call(fetchRecommendedTvShowsStart)
+    call(fetchSimilarAndRecommendedTvShowsStart)
   ]);
 }

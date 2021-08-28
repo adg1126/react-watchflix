@@ -18,22 +18,23 @@ export default function Movie({
   movieId,
   movie,
   recommendedMovies,
+  similarMovies,
   trailerUrl,
   fetchMovieStart,
   fetchTrailerUrlStart,
-  fetchRecommendedMoviesStart
+  fetchSimilarAndRecommendedMoviesStart
 }) {
   const classes = useStyles();
 
   useEffect(() => {
     fetchMovieStart(movieId);
     fetchTrailerUrlStart(movieId);
-    fetchRecommendedMoviesStart(movieId);
+    fetchSimilarAndRecommendedMoviesStart(movieId);
   }, [
     movieId,
     fetchMovieStart,
     fetchTrailerUrlStart,
-    fetchRecommendedMoviesStart
+    fetchSimilarAndRecommendedMoviesStart
   ]);
 
   const [player, setPlayer] = useState(null);
@@ -99,6 +100,21 @@ export default function Movie({
             </Grid>
             <Grid item>
               <MediaRow mediaArr={recommendedMovies} />
+            </Grid>
+          </Grid>
+          <Grid item container direction='column' style={{ width: '95%' }}>
+            <Grid item>
+              <Typography
+                variant='h5'
+                className={[classes.fontWhite, classes.moviesSectionTitle].join(
+                  ' '
+                )}
+              >
+                Similar Movies
+              </Typography>
+            </Grid>
+            <Grid item>
+              <MediaRow mediaArr={similarMovies} />
             </Grid>
           </Grid>
         </Grid>

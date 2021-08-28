@@ -11,9 +11,9 @@ import {
   FETCH_TV_SHOW_START,
   FETCH_TV_SHOW_SUCCESS,
   FETCH_TV_SHOW_FAILURE,
-  FETCH_RECOMMENDED_TV_SHOWS_START,
-  FETCH_RECOMMENDED_TV_SHOWS_SUCCESS,
-  FETCH_RECOMMENDED_TV_SHOWS_FAILURE
+  FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_START,
+  FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_SUCCESS,
+  FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_FAILURE
 } from './TvShowsActionTypes';
 
 export const fetchTvShowsStart = () => ({
@@ -74,17 +74,17 @@ export const fetchTvShowFailure = errMsg => ({
   payload: errMsg
 });
 
-export const fetchRecommendedTvShowsStart = tvShowId => ({
-  type: FETCH_RECOMMENDED_TV_SHOWS_START,
+export const fetchSimilarAndRecommendedTvShowsStart = tvShowId => ({
+  type: FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_START,
   payload: tvShowId
 });
 
-export const fetchRecommendedTvShowsSuccess = tvShowArr => ({
-  type: FETCH_RECOMMENDED_TV_SHOWS_SUCCESS,
-  payload: tvShowArr
+export const fetchSimilarAndRecommendedTvShowsSuccess = tvShowsObj => ({
+  type: FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_SUCCESS,
+  payload: tvShowsObj
 });
 
-export const fetchRecommendedTvShowsFailure = errMsg => ({
-  type: FETCH_RECOMMENDED_TV_SHOWS_FAILURE,
+export const fetchSimilarAndRecommendedTvShowsFailure = errMsg => ({
+  type: FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_FAILURE,
   payload: errMsg
 });

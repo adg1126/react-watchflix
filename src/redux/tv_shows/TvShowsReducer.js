@@ -10,9 +10,9 @@ import {
   FETCH_TV_SHOW_START,
   FETCH_TV_SHOW_SUCCESS,
   FETCH_TV_SHOW_FAILURE,
-  FETCH_RECOMMENDED_TV_SHOWS_START,
-  FETCH_RECOMMENDED_TV_SHOWS_SUCCESS,
-  FETCH_RECOMMENDED_TV_SHOWS_FAILURE
+  FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_START,
+  FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_SUCCESS,
+  FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_FAILURE
 } from './TvShowsActionTypes';
 
 const INITIAL_STATE = {
@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   bannerTvShow: null,
   trailerUrl: null,
   tvShow: null,
-  recommendedTvShows: [],
+  similarAndRecommended: {},
   tvShowList: {}
 };
 
@@ -30,7 +30,7 @@ const tvShowsReducer = (state = INITIAL_STATE, action) => {
     case FETCH_TV_SHOWS_START:
     case FETCH_BANNER_TV_SHOW_START:
     case FETCH_TV_SHOW_START:
-    case FETCH_RECOMMENDED_TV_SHOWS_START:
+    case FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_START:
       return { ...state, isFetched: false };
     case FETCH_TV_SHOWS_SUCCESS:
       return {
@@ -44,13 +44,17 @@ const tvShowsReducer = (state = INITIAL_STATE, action) => {
       return { ...state, trailerUrl: action.payload };
     case FETCH_TV_SHOW_SUCCESS:
       return { ...state, isFetched: true, tvShow: action.payload };
-    case FETCH_RECOMMENDED_TV_SHOWS_SUCCESS:
-      return { ...state, isFetched: true, recommendedTvShows: action.payload };
+    case FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_SUCCESS:
+      return {
+        ...state,
+        isFetched: true,
+        similarAndRecommended: action.payload
+      };
     case FETCH_TV_SHOWS_FAILURE:
     case FETCH_BANNER_TV_SHOW_FAILURE:
     case FETCH_TRAILER_URL_FAILURE:
     case FETCH_TV_SHOW_FAILURE:
-    case FETCH_RECOMMENDED_TV_SHOWS_FAILURE:
+    case FETCH_SIMILAR_AND_RECOMMENDED_TV_SHOWS_FAILURE:
       return { ...state, isFetched: false, errMessage: action.payload };
     default:
       return state;

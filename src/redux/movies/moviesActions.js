@@ -11,9 +11,9 @@ import {
   FETCH_MOVIE_START,
   FETCH_MOVIE_SUCCESS,
   FETCH_MOVIE_FAILURE,
-  FETCH_RECOMMENDED_MOVIES_START,
-  FETCH_RECOMMENDED_MOVIES_SUCCESS,
-  FETCH_RECOMMENDED_MOVIES_FAILURE
+  FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_START,
+  FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_SUCCESS,
+  FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_FAILURE
 } from './moviesActionTypes';
 
 export const fetchMoviesStart = () => ({
@@ -74,17 +74,17 @@ export const fetchMovieFailure = errMsg => ({
   payload: errMsg
 });
 
-export const fetchRecommendedMoviesStart = movieId => ({
-  type: FETCH_RECOMMENDED_MOVIES_START,
+export const fetchSimilarAndRecommendedMoviesStart = movieId => ({
+  type: FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_START,
   payload: movieId
 });
 
-export const fetchRecommendedMoviesSuccess = moviesArr => ({
-  type: FETCH_RECOMMENDED_MOVIES_SUCCESS,
-  payload: moviesArr
+export const fetchSimilarAndRecommendedMoviesSuccess = moviesObj => ({
+  type: FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_SUCCESS,
+  payload: moviesObj
 });
 
-export const fetchRecommendedMoviesFailure = errMsg => ({
-  type: FETCH_RECOMMENDED_MOVIES_FAILURE,
+export const fetchSimilarRecommendedMoviesFailure = errMsg => ({
+  type: FETCH_SIMILAR_AND_RECOMMENDED_MOVIES_FAILURE,
   payload: errMsg
 });
